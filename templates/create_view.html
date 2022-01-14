@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD PAGE</title>
+{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"#}
+{#          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">#}
+    <style>
+        h1  {
+            text-align: center;
+            color: darkgray;
+            background: beige;
+        }
+        #table {
+            border: outset;
+            align-items: flex-start;
+            margin: 10px 200px 10px 620px ;
+        }
+        #vik {
+            margin: 10px 740px 10px 720px;
+            border: outset;
+        }
+        thead {
+            background: aquamarine;
+        }
+        div {
+            margin-left: 1400px;
+        }
+    </style>
+</head>
+
+<div>
+
+
+    {% if request.user.is_authenticated %}
+    <button><a href="{% url 'logout' %}">logout</a></button>
+    {% endif %}
+
+</div>
+  {% if messages %}
+      {% csrf_token %}
+    <ul class="messages">
+        {% for message in messages %}
+        <h2  {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h2>
+        {% endfor %}
+    </ul>
+  {% endif %}
+<center><h1>{{ user.username }}</h1></center>
+<h1>Fill The Form</h1>
+<form method="POST" >
+    {% csrf_token %}
+    <table id="table">
+    <h2>{{ form.as_table}}</h2>
+    </table>
+    <p id="vik"><input type="submit" value="Submit"></p>
+</form>
+
+
+
+<h1>User Details</h1>
+<form >
+<center>
+<table border = 1>
+
+    <thead>
+        <th> USERNAME</th>
+        <th> FIST NAME</th>
+        <th> LAST NAME</th>
+        <th> EMAIL</th>
+        <th> AGE</th>
+        <th>UPDATE</th>
+        <th>DELETE</th>
+    </thead>
+        {% for i in data %}
+        <tbody>
+        <tr>
+            <td> {{ i.User_name }}</td>
+            <td> {{ i.First_name }}</td>
+            <td>{{ i.Last_name }}</td>
+            <td>{{ i.Email }}</td>
+            <td>{{ i.Age }}</td>
+{#            <td><button type="button" class="btn btn-primary" data-bs-toggle="moddal" data-bs-target="#staticBackdrop"><a href="{% url 'update' i.id %}">UPDATE</a></button></td>#}
+            <td><button ><a href="{% url 'update' i.id %}">UPDATE</a></button></td>
+            <td> <a href="{% url 'delete' i.id %}" onclick=" return confirm('Are you sure ?');"> DELETE </a></td>
+        </tr>
+        </tbody>
+    {% endfor %}
+</table></center>
+</form>
+{#<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"#}
+{#        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"#}
+{#        crossorigin="anonymous"></script>#}
+
+</body>
+</html>

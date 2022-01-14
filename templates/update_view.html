@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        h1 {
+            color: darkgray;
+            background: beige;
+        }
+        form {
+            border: outset;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<center><h1>Update the Details</h1></center>
+<form  method="POST" action="{% url 'update' data.id %}">
+    {% csrf_token %}
+    <div>
+        <center>
+        <table>
+            <thead>
+
+            <th> FIST NAME</th>
+            <th> LAST NAME</th>
+            <th> EMAIL</th>
+            <th> AGE</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="text" name="first_name" value="{{ data.First_name }}"></td>
+                <td><input type="text" name="last_name" value="{{ data.Last_name }}"></td>
+                <td><input type="text" name="email" value="{{ data.Email }}"></td>
+                <td><input type="text" name="age" value="{{ data.Age }}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+        </center>
+        <input type="submit" value="Update" style="margin: 10px 100px 50px 725px">
+    </div>
+</form>
+</body>
+</html>
+
+
+
+
+

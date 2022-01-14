@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <h1>
+        Register Yourself
+    </h1>
+      {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <form method="POST" action={% url 'register' %}>
+
+        {% csrf_token %}
+        {% for i in form %}
+
+            {{ i.label_tag }}<br>
+                {{ i }}<br>
+{#                {% if i.help_text %}#}
+{#                    <small>{{ i.help_text }}</small>#}
+{#                {% endif %}#}
+                <br>
+                {% for error in i.errors %}
+                    <p>{{error}}</p>
+                {% endfor %}
+
+        {% endfor %}
+        <input type="submit" value="Submit">
+{#         <label for="email"><b>Email_Id</b></label>#}
+{#    <input type="email" placeholder="Enter Email" name="email" required><br>#}
+{#        <label for="password"><b>Password</b></label>#}
+{#    <input type="password" placeholder="Enter Password" name="password" required><br>#}
+{#            <label for="contact"><b>Contact no.</b></label>#}
+{#    <input type="text" placeholder="contact" name="contact" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required><br>#}
+{#        <label for="first_name"><b>First Name</b></label>#}
+{#    <input type="text" placeholder="firstname" name="firstname" required><br>#}
+{#        <label for="last_name"><b>Last Name</b></label>#}
+{#    <input type="text" placeholder="last name" name="lastname" required><br>#}
+{##}
+{##}
+{#    <button type="submit">Register</button><br>#}
+    </form>
+</body>
+</html>
