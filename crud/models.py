@@ -1,7 +1,9 @@
-
+from PIL import Image
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser, User
 from django.core.validators import RegexValidator
 from django.db import models
+
+
 #
 # class UserManager(BaseUserManager):
 #
@@ -26,11 +28,21 @@ from django.db import models
 
 
 class Information(models.Model):
-    User_name = models.ForeignKey(User, on_delete=models.CASCADE, null= False , blank= True)
+    User_name = models.ForeignKey(User, on_delete=models.CASCADE, null=False, blank=True)
     First_name = models.CharField(max_length=100)
     Last_name = models.CharField(max_length=100)
     Email = models.EmailField()
     Age = models.IntegerField()
 
     def __str__(self):
-        return self.User_name
+        return str(self.User_name)
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imag = models.ImageField(default="default.png", upload_to='static/profile_image')
+
+    def __str__(self):
+        return self.user.username
+
+

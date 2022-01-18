@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from crud.models import Information
+from crud.models import Information, Profile
 
 
 class UserForm(forms.ModelForm):
@@ -48,4 +48,11 @@ class RegistrationForm(UserCreationForm):
         model = User
         field = "__all__"
 
+
 #
+class UpdateProfileForm(forms.ModelForm):
+    imag = forms.ImageField(widget=forms.FileInput())
+
+    class Meta:
+        model = Profile
+        fields = ["imag",]

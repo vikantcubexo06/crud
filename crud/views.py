@@ -12,11 +12,43 @@ from django.utils.http import urlsafe_base64_encode
 
 from jangoPro1 import settings
 from .ModelForm import UserForm, RegistrationForm
-from .models import Information
+from .models import Information, Profile
 from django.urls import reverse
 from django.contrib import messages
 
 from django.core.mail import send_mail
+
+
+@login_required(login_url='login')
+def profile(request):
+    if request.method == "POST":
+        user = request.POST['username']
+        print(request.POST)
+        print(request.FILES)
+        imag = request.FILES['pic']
+
+        v = Profile.objects.get(user=User.objects.get(username=user))
+        if v:
+            v.imag = request.FILES["pic"]
+
+            # update_form = Profile.objects.create(user=User.objects.get(username=user), imag=imag)
+            v.save()
+            return redirect('user_profile')
+        else:
+            update_form = Profile.objects.create(user=User.objects.get(username=user), imag=imag)
+            update_form.save()
+            return redirect('user_profile')
+
+    else:
+        user = {}
+        user['username'] = request.session['username']
+        user1 = Profile.objects.filter(user=User.objects.get(username=user['username']))
+        if user1:
+            # user1=Profile.objects.filter(im+=User.objects.get(imag=imag))
+
+            return render(request, 'profile.html', context={'username': user, "pic": user1[0]})
+
+    return render(request, 'profile.html', context={'username': user})
 
 
 def login_view(request):
@@ -27,8 +59,14 @@ def login_view(request):
         if user1 is not None:
             login(request, user1)
             messages.success(request, 'welcome user ')
-            # request.session['username'] = username
 
+            request.session['username'] = username
+
+            context = {
+                "username": username
+            }
+
+            # return render(request, 'create_view.html', context)
             return redirect('create_view')
         else:
             fm = AuthenticationForm()
@@ -39,9 +77,7 @@ def login_view(request):
 
 @login_required(login_url='login')
 def create_view(request):
-
     if User.objects.get(username=request.user.username).get_username() == 'vikrant':
-
 
         if request.method == 'POST':
             f = UserForm(request.POST)
@@ -63,29 +99,45 @@ def create_view(request):
             return render(request, 'create_view.html', context)
     else:
         if request.method == 'POST':
-            obj = User.objects.get(pk=request.user.id)
-            f = UserForm(request.POST)
+            username = request.POST['User_name']
+            first_name = request.POST['First_name']
+            last_name = request.POST['Last_name']
+            email = request.POST['Email']
+            age = request.POST['Age']
 
-            if f.is_valid():
-                newKey=f.save()
-                add = Information.objects.get(id=newKey.pk)
-                add.user = obj
-                add.save()
+            # obj = User.objects.filter(email=email)
+            # print(obj)
+            obj = Information.objects.create(User_name=User.objects.get(username=username), First_name=first_name,
+                                             Last_name=last_name, Email=email, Age=age)
+            obj.save()
+
+            # add = Information.objects.get(id=newKey.pk)
+            # add.user = obj
+            # add.save()
 
             return HttpResponseRedirect(reverse(create_view))
         else:
+            # obj = User.objects.get(pk=request.user.id)
 
             data = Information.objects.filter(User_name=request.user)
-
-            obj = User.objects.get(pk=request.user.id)
-            print(obj)
+            # data1 = Information.objects.all()
+            # print("data1")
             f = UserForm()
-            f.id = obj
+            # f.id = obj
+
+            # print(f.id)
+
+            # f = UserForm()
+            # def name():
+            # if data.first().User_name == request.session['username']:
+            #     return data.first().User_name_id
+
             context = {
                 "form": f,
                 'data': data,
-
+                'username': data.first().User_name_id
             }
+            print(context.get('username'))
             return render(request, 'create_view.html', context)
 
 
@@ -212,10 +264,3 @@ def forget_pass(request):
                 return render(request, "password_reset_done.html")
         # print('none happing')
     # print('not sending')
-
-# def save_pass(request):
-#     u = User.objects.get()
-#     print(u)
-#     u.set_password('new password')
-#     u.save()
-#     return render(request, 'password_reset_complete.html')

@@ -1,0 +1,23 @@
+{#{% extends 'create_view.html' %}#}
+{% load static %}
+{% block content %}
+    <div>
+
+        <h1>Profile Page for {{ user.username }}</h1>
+        {% if pic %}
+        <img src="{{ pic.imag.url }} " style="max-height: 150px; max-width: 120px;"/>
+        {% else %}<img src="{% static 'default.png' %} " style="max-height: 150px; max-width: 120px;"/>
+    {% endif %}
+    </div>
+    <div>
+        <form method="POST" action="{% url 'user_profile'  %}" enctype="multipart/form-data">
+            {% csrf_token    %}
+            <hr>
+            <label >Change image:</label>
+            <input type="file" name="pic" required>
+            <input type="hidden" value="{{ user.username }}" name="username" readonly>
+            <br><br>
+            <button type="submit" >Save Changes</button>
+        </form>
+    </div>
+{% endblock content %}

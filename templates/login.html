@@ -3,29 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>login page</title>
+    <style>
+        p{
+            text-align: left;
+            color: darkgray;
+            background: beige;
+        }
+        #b{
+            text-align: center;
+        }
+        {#div{#}
+        {#  background-image: url('back.jpg');#}
+        {#  background-repeat: no-repeat;#}
+        {#  background-attachment: fixed;#}
+        {#  background-size: cover;#}
+        {#}#}
+    </style>
 
 </head>
 <body>
-<h3>{% if msg %}{{ msg }}{% endif %}</h3>
-  {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <p  {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-    {% endfor %}
-    </ul>
-  {% endif %}
-<form method="POST" action={% url 'login' %}>
-    {% csrf_token %}
-    <table id="table1">
-    {{ form }}
-    </table>
-    <button style="margin: 10px 0px 0px 100px" type="submit" value="LOGIN">Login</button><br>
-    <button  type="submit" value="LOGIN"><a href="{% url 'register' %}">Register</a></button>
-    <button  type="submit" value="reset"><a href="{% url 'password_reset' %}">Forget password?</a></button>
-</form>
+    <div>
+        <h3>{% if msg %}{{ msg }}{% endif %}</h3>
+          {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <p  {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        <form style='margin-top: 250px'  method="POST" action={% url 'login' %}>
+            {% csrf_token %}
+            <center><table id="table1">
+            {{ form }}
+            </table></center>
+            <button style="margin: 10px 0px 0px 640px" type="submit" value="LOGIN">Login</button><br>
+            <button   style="margin: 10px 0px 0px 640px" type="submit" value="register"><a href="{% url 'register' %}">Register</a></button>
+            <button  style="margin: 10px 0px 0px 10px" type="submit" value="reset"><a href="{% url 'password_reset' %}">Forget password?</a></button>
 
-<br>
-
+        </form>
+    </div>
 </body>
 
 

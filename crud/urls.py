@@ -1,9 +1,15 @@
 from django.urls import path
+
+from jangoPro1 import settings
 from . import views
 from django.contrib.auth import views as auth_view
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
-
+    path('profile/',views.profile,name='user_profile'),
     path('create/', views.create_view, name='create_view'),
     path('update/<int:id>', views.Update, name='update'),
     path('delete/<int:id>', views.delete, name='delete'),
@@ -26,4 +32,4 @@ urlpatterns = [
          auth_view.PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),
          name='password_reset_complete'),
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
