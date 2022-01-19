@@ -40,15 +40,14 @@
     </style>
 </head>
 
-<div>
 
 
-    {% if request.user.is_authenticated %}
-        <button><a href="{% url 'logout' %}">logout</a></button>
-    {% endif %}
+{#    {% if request.user.is_authenticated %}#}
+{#        <button><a href="{% url 'logout' %}">logout</a></button>#}
+{#    {% endif %}#}
 
+    {% include 'common.html' %}
 
-</div>
 <a href="{% url 'user_profile' %}" >Profile</a>
 {#<img src="{% static 'default.png' %}" >#}
 {% if messages %}

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            margin-right: fill;
+        }
+    </style>
+</head>
+<body>
+<div>
+{% if request.user.is_authenticated %}
+    <button><a href="{% url 'logout' %}">logout</a></button>
+{% endif %}
+</div>
+</body>
+</html>

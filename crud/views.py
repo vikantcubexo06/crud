@@ -9,13 +9,11 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-
 from jangoPro1 import settings
 from .ModelForm import UserForm, RegistrationForm
 from .models import Information, Profile
 from django.urls import reverse
 from django.contrib import messages
-
 from django.core.mail import send_mail
 
 
@@ -26,27 +24,24 @@ def profile(request):
         print(request.POST)
         print(request.FILES)
         imag = request.FILES['pic']
-
-        v = Profile.objects.get(user=User.objects.get(username=user))
-        if v:
-            v.imag = request.FILES["pic"]
-
-            # update_form = Profile.objects.create(user=User.objects.get(username=user), imag=imag)
-            v.save()
-            return redirect('user_profile')
-        else:
+        try:
+            v = Profile.objects.get(user=User.objects.get(username=user))
+            if v:
+                v.imag = request.FILES["pic"]
+                v.save()
+                # messages.success(request, 'Profile updated successfully')
+                return redirect('user_profile')
+        except:
             update_form = Profile.objects.create(user=User.objects.get(username=user), imag=imag)
             update_form.save()
+            # messages.success(request, 'Profile updated successfully')
             return redirect('user_profile')
-
     else:
         user = {}
         user['username'] = request.session['username']
         user1 = Profile.objects.filter(user=User.objects.get(username=user['username']))
         if user1:
-            # user1=Profile.objects.filter(im+=User.objects.get(imag=imag))
-
-            return render(request, 'profile.html', context={'username': user, "pic": user1[0]})
+            return render(request, 'profile.html', context={'username': user,"pic": user1[0]})
 
     return render(request, 'profile.html', context={'username': user})
 
